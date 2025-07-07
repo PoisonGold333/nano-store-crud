@@ -1,0 +1,197 @@
+<div class="card">
+    <div class="mb-4">
+        <p-button
+            severity="success"
+            label="Nuevo Producto"
+            icon="pi pi-plus"
+            (click)="openNew()">
+        </p-button>
+    </div>
+
+    <p-table
+        [value]="products"
+        [paginator]="true"
+        [rows]="5"
+        responsiveLayout="scroll">
+        
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Imagen</th>
+                <th>Título</th>
+                <th>Marca</th>
+                <th>Categoría</th>
+                <th>Precio</th>
+                <th>Descuento</th>
+                <th>Rating</th>
+                <th>Stock</th>
+                <th>Acciones</th>
+            </tr>
+        </ng-template>
+        
+        <ng-template pTemplate="body" let-product>
+            <tr>
+                <td>
+                    <img [src]="product.thumbnail" [alt]="product.title" 
+                         style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">
+                </td>
+                <td>{{product.title}}</td>
+                <td>{{product.brand}}</td>
+                <td>{{product.category}}</td>
+                <td>{{product.price | currency:'USD'}}</td>
+                <td>{{product.discountPercentage}}%</td>
+                <td>{{product.rating}} ⭐</td>
+                <td>{{product.stock}}</td>
+                <td>
+                    <p-button
+                        icon="pi pi-pencil"
+                        class="mr-2"
+                        severity="info"
+                        size="small"
+                        (click)="editProduct(product)">
+                    </p-button>
+                    <p-button
+                        icon="pi pi-trash"
+                        severity="danger"
+                        size="small"
+                        (click)="deleteProduct(product)">
+                    </p-button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+<p-dialog
+    [(visible)]="productDialog"
+    [style]="{width: '600px'}"
+    header="Producto"
+    [modal]="true">
+    
+    <div class="grid">
+        <div class="col-12">
+            <div class="field">
+                <label for="title">Título *</label>
+                <input
+                    type="text"
+                    pInputText
+                    id="title"
+                    [(ngModel)]="product.title"
+                    required />
+                <small class="p-error" *ngIf="submitted && !product.title">
+                    El título es requerido.
+                </small>
+            </div>
+        </div>
+        
+        <div class="col-12">
+            <div class="field">
+                <label for="description">Descripción</label>
+                <textarea
+                    id="description"
+                    pInputTextarea
+                    [(ngModel)]="product.description"
+                    rows="3">
+                </textarea>
+            </div>
+        </div>
+        
+        <div class="col-6">
+            <div class="field">
+                <label for="brand">Marca</label>
+                <input
+                    type="text"
+                    pInputText
+                    id="brand"
+                    [(ngModel)]="product.brand"/>
+            </div>
+        </div>
+        
+        <div class="col-6">
+            <div class="field">
+                <label for="category">Categoría</label>
+                <input
+                    type="text"
+                    pInputText
+                    id="category"
+                    [(ngModel)]="product.category"/>
+            </div>
+        </div>
+        
+        <div class="col-4">
+            <div class="field">
+                <label for="price">Precio</label>
+                <input
+                    type="number"
+                    pInputText
+                    id="price"
+                    [(ngModel)]="product.price"/>
+            </div>
+        </div>
+        
+        <div class="col-4">
+            <div class="field">
+                <label for="discount">Descuento (%)</label>
+                <input
+                    type="number"
+                    pInputText
+                    id="discount"
+                    [(ngModel)]="product.discountPercentage"
+                    min="0"
+                    max="100"/>
+            </div>
+        </div>
+        
+        <div class="col-4">
+            <div class="field">
+                <label for="rating">Rating</label>
+                <input
+                    type="number"
+                    pInputText
+                    id="rating"
+                    [(ngModel)]="product.rating"
+                    min="0"
+                    max="5"
+                    step="0.1"/>
+            </div>
+        </div>
+        
+        <div class="col-6">
+            <div class="field">
+                <label for="stock">Stock</label>
+                <input
+                    type="number"
+                    pInputText
+                    id="stock"
+                    [(ngModel)]="product.stock"/>
+            </div>
+        </div>
+        
+        <div class="col-6">
+            <div class="field">
+                <label for="thumbnail">URL de Imagen</label>
+                <input
+                    type="url"
+                    pInputText
+                    id="thumbnail"
+                    [(ngModel)]="product.thumbnail"
+                    placeholder="https://ejemplo.com/imagen.jpg"/>
+            </div>
+        </div>
+    </div>
+    
+    <div class="flex justify-content-end gap-2 mt-3">
+        <p-button
+            label="Cancelar"
+            icon="pi pi-times"
+            severity="secondary"
+            (click)="hideDialog()">
+        </p-button>
+        <p-button
+            label="Guardar"
+            icon="pi pi-check"
+            (click)="saveProduct()">
+        </p-button>
+    </div>
+</p-dialog>
+
+<p-toast></p-toast>
