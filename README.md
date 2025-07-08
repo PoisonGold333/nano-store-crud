@@ -30,17 +30,37 @@ cd nano-store
 npm install
 ```
 
-Crear un archivo `.env` con esto:
+**Configurar variables de entorno:**
 
-```
-MONGODB_URI=mongodb+srv://alvaroDorado:Admin123@cluster0.ewvnnij.mongodb.net/nano-store?retryWrites=true&w=majority
-```
-
-Ejecutar el backend:
+1. Copia el archivo de ejemplo:
 
 ```bash
-nest start
+cp .env.example .env
 ```
+
+2. Edita el archivo `.env` con tus credenciales:
+
+```env
+MONGODB_URI=mongodb+srv://TU_USUARIO:TU_PASSWORD@TU_CLUSTER.mongodb.net/nano-store?retryWrites=true&w=majority
+PORT=3000
+```
+
+> ⚠️ **Importante**: Nunca subas el archivo `.env` a GitHub. Usa tus propias credenciales de MongoDB Atlas.
+
+3. Poblar la base de datos con datos de prueba:
+
+```bash
+npm run build
+node dist/seed.js
+```
+
+4. Ejecutar el backend:
+
+```bash
+npm run start:dev
+```
+
+> 💡 **Nota**: Si `nest start` da errores de TypeScript, usa `npm run start:dev` que es más tolerante.
 
 ### Paso 3: Ejecutar mi frontend
 
